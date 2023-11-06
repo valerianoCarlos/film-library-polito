@@ -1,46 +1,217 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/g5Hi-YAN)
-# Exam #12345: "Exam Title"
-## Student: s123456 LASTNAME FIRSTNAME 
+# Film Library App
 
-## React Client Application Routes
+The database has some users
 
-- Route `/`: page content and purpose
-- Route `/something/:param`: page content and purpose, param specification
-- ...
+- email: john.doe@polito.it, password: "password"
+- email: mario.rossi@polito.it, password: "password"
+- email: testuser@polito.it, password: "password"
 
-## API Server
+## List of APIs offered by the server
 
-- POST `/api/login`
-  - request parameters and request body content
-  - response body content
-- GET `/api/something`
-  - request parameters
-  - response body content
-- POST `/api/something`
-  - request parameters and request body content
-  - response body content
-- ...
+### Film Management
 
-## Database Tables
+#### Get all films
 
-- Table `users` - contains xx yy zz
-- Table `something` - contains ww qq ss
-- ...
+- HTTP method: `GET` URL: `/api/films`
+- Description: Get the full list of films or the films that match the query filter parameter
+- Request body: _None_
+- Request query parameter: _filter_ name of the filter to apply (filter-all, filter-favorite, filter-best, filter-lastmonth, filter-unseen)
+- Response: `200 OK` (success)
+- Response body: Array of objects, each describing one film:
 
-## Main React Components
+```json
+[
+  {
+    "id": 1,
+    "title": "Pulp Fiction",
+    "favorite": 1,
+    "watchDate": "2023-03-11",
+    "rating": 5,
+    "user": 1
+  },
+  {
+    "id": 2,
+    "title": "21 Grams",
+    "favorite": 1,
+    "watchDate": "2023-03-17",
+    "rating": 4,
+    "user": 1
+  },
+  ...
+]
+```
 
-- `ListOfSomething` (in `List.js`): component purpose and main functionality
-- `GreatButton` (in `GreatButton.js`): component purpose and main functionality
-- ...
+- Error responses: `500 Internal Server Error` (generic error)
 
-(only _main_ components, minor ones may be skipped)
+#### Get film by id
 
-## Screenshot
+- HTTP method: `GET` URL: `/api/films/:id`
+- Description: Get the film corresponding to the id
+- Request body: _None_
+- Response: `200 OK` (success)
+- Response body: One object describing the required film:
 
-![Screenshot](./img/screenshot.jpg)
+```JSON
+[
+  {
+    "id": 2,
+    "title": "21 Grams",
+    "favorite": 1,
+    "watchDate": "2023-03-17",
+    "rating": 4,
+    "user": 1
+  }
+]
+```
 
-## Users Credentials
+- Error responses: `500 Internal Server Error` (generic error), `404 Not Found` (not present or unavailable)
 
-- username, password (plus any other requested info)
-- username, password (plus any other requested info)
+#### Add a new film
 
+- HTTP method: `POST` URL: `/api/films`
+- Description: Add a new film to the films of user 1
+- Request body: description of the object to add (user property, if present, is ignored and substituted with the value 1, film id value is not required and is ignored)
+
+```JSON
+{
+    "id": 2,
+    "title": "21 Grams",
+    "favorite": 1,
+    "watchDate": "2023-03-17",
+    "rating": 4,
+    "user": 1
+}
+```
+
+- Response: `200 OK` (success)
+- Response body: the object as represented in the database
+
+- Error responses: `503 Service Unavailable` (database error)
+
+#### Update an existing film
+
+- HTTP method: `PUT` URL: `/api/films/:id`
+- Description: Update values of an existing film, except the id (user property, if present, is ignored and substituted with the value 1)
+- Request body: description of the object to update
+
+```JSON
+{
+    "id": 2,
+    "title": "The Matrix",
+    "favorite": 1,
+    "watchDate": "2023-03-31",
+    "rating": 5,
+    "user": 1
+}
+```
+
+- Response: `200 OK` (success)
+- Response body: the object as represented in the database
+
+- Error responses: `503 Service Unavailable` (database error)
+
+#### Delete an existing film
+
+- HTTP method: `DELETE` URL: `/api/films/:id`
+- Description: Delete an existing film
+- Request body: _None_
+
+- Response: `200 OK` (success)
+- Response body: an empty object
+
+- Error responses: `503 Service Unavailable` (database error)
+
+#### Update favorite property of an existing film
+
+- HTTP method: `PUT` URL: `/api/films/:id/favorite`
+- Description: Update favorite property value of an existing film
+- Request body: value of the favorite property
+
+```JSON
+{
+    "id": 2,
+    "favorite": 1,
+}
+```
+
+- Response: `200 OK` (success)
+- Response body: the object as represented in the database
+
+- Error responses: `503 Service Unavailable` (database error)
+
+#### Update rating property of an existing film
+
+- HTTP method: `PUT` URL: `/api/films/:id/rating`
+- Description: Update rating property value of an existing film
+- Request body: value of the rating property
+
+```JSON
+{
+    "id": 2,
+    "rating": 5,
+}
+```
+
+- Response: `200 OK` (success)
+- Response body: the object as represented in the database
+
+- Error responses: `503 Service Unavailable` (database error)
+
+### User management
+
+#### Create a new session (login)
+
+URL: `/api/sessions`
+
+HTTP Method: POST
+
+Description: Create a new session starting from given credentials.
+
+Request body:
+
+```
+{
+  "username": "harry@test.com",
+  "password": "pwd"
+}
+```
+
+Response: `200 OK` (success) or `500 Internal Server Error` (generic error).
+
+Response body: _None_
+
+#### Get the current session if existing
+
+URL: `/api/sessions/current`
+
+HTTP Method: GET
+
+Description: Verify if the given session is still valid and return the info about the logged-in user. A cookie with a VALID SESSION ID must be provided to get the info of the user authenticated in the current session.
+
+Request body: _None_
+
+Response: `201 Created` (success) or `401 Unauthorized` (error).
+
+Response body:
+
+```
+{
+  "username": "harry@test.com",
+  "id": 4,
+  "name": "Harry"
+}
+```
+
+#### Destroy the current session (logout)
+
+URL: `/api/sessions/current`
+
+HTTP Method: DELETE
+
+Description: Delete the current session. A cookie with a VALID SESSION ID must be provided.
+
+Request body: _None_
+
+Response: `200 OK` (success) or `500 Internal Server Error` (generic error).
+
+Response body: _None_
