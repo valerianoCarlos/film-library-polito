@@ -1,0 +1,96 @@
+/*
+ * [2022/2023]
+ * 01UDFOV Applicazioni Web I / 01TXYOV Web Applications I
+ * Lab 7
+ */
+
+/* Global */
+.vheight-100 {
+  min-height: 100vh;
+}
+
+/* Styles related to NavBar */
+.no-underline {
+  text-decoration: none;
+}
+
+.navbar-padding {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.below-nav {
+  padding-top: 5rem;
+}
+
+@media only screen and (max-width: 768px) {
+  .col-md-10 {
+    padding-top: 0;
+  }
+  .col-md-2 {
+    padding-bottom: 0;
+  }
+}
+
+/* Icons */
+.icon-size {
+  font-size: 1.5rem;
+}
+
+/* Filters and projects */
+
+.projects-title {
+  margin-top: 2rem;
+}
+
+.disable-link {
+  pointer-events: none;
+}
+
+/* Table */
+
+td,
+th {
+  vertical-align: middle; /* Centra il contenuto verticalmente */
+}
+
+.center-inside {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+/* Changing color when mouse is hover certain elements suggests that interaction is possible */
+
+.bi-star:hover {
+  color: #e2be0e;
+}
+
+.bi-heart:hover {
+  color: red;
+}
+
+/*
+ * NOTE: HTML collapses multiple withespaces into one, so "Hello      world!" becomes "Hello world!".
+ * If you want to keep them use white-space: pre-wrap;
+ */
+.keep-white-space {
+  white-space: pre-wrap;
+}
+
+/* Add task button */
+.fixed-right-bottom {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  z-index: 1030;
+  margin: 0 1.5rem 1.5rem 0;
+  border-radius: 50%;
+}
+
+/* Adding padding to form */
+.form-padding {
+  padding: 2rem;
+}
